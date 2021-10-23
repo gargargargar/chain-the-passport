@@ -4,5 +4,5 @@ def get_vaccine_info():
 
 
 def add_vaccine_record():
-    # TODO
+    # TODO: add wallet number to firebase if necessary
     pass

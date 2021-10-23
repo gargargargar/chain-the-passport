@@ -1,4 +1,6 @@
 from flask import Flask, request
+import user
+import json
 
 app = Flask(__name__)
 
@@ -10,21 +12,23 @@ def hello_world():
 
 @app.route('/qr_metadata')
 def gen_qr_code_metadata():
-    # TODO: generate qr code
-    pass
+    session_id = request.args.get('session_id')
+    return user.gen_qr_code_metadata(session_id)
 
 
 @app.route('/validate')
 def validate():
-    # TODO: validate qr code
-    pass
+    metadata = request.args.get('metadata')
+    if metadata is None:
+        metadata = json.dumps({})
+    return user.validate_qr_code_metadata(metadata)
 
 
 @app.route('/vaccine', methods=['GET', 'POST'])
 def view_or_add_vaccine_record():
     # TODO: GET - get a user's vaccine records
     # TODO: POST - create a user's vaccine records
-    pass
+    return 'Work in progress'
 
 
 if __name__ == '__main__':
