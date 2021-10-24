@@ -3,7 +3,6 @@ import user
 import json
 
 app = Flask(__name__)
-url = "https://mainnet.infura.io/v3/5525aa496c284560a48cb2cd72fa634b"
 
 @app.route('/')
 def hello_world():
