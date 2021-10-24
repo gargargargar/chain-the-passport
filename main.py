@@ -5,10 +5,10 @@ import firebase_admin
 
 app = Flask(__name__)
 
-
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    w3 = Web3.HTTPProvider(url)
+    return str(w3.isConnected())
 
 
 @app.route('/qr_metadata')
