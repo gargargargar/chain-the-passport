@@ -3,6 +3,7 @@ import user
 import json
 import firebase_admin
 import etherium
+import healthcare_worker
 
 app = Flask(__name__)
 
@@ -24,7 +25,6 @@ def gen_qr_code_metadata():
 @app.route('/validate')
 def validate():
     metadata = request.args.get('metadata')
-    print(metadata)
     if metadata is None:
         metadata = json.dumps({})
     return user.validate_qr_code_metadata(metadata)
@@ -32,9 +32,14 @@ def validate():
 
 @app.route('/vaccine', methods=['GET', 'POST'])
 def view_or_add_vaccine_record():
-    # TODO: GET - get a user's vaccine records
-    # TODO: POST - create a user's vaccine records
-    return 'Work in progress'
+    if request.method == 'GET':
+        id_token = request.args.get('id_token')
+        return healthcare_worker.get_vaccine_info(id_token)
+    elif request.method == 'POST':
+        request_body = request.form
+        healthcare_worker.add_vaccine_record(request_body)
+
+    return {}
 
 
 if __name__ == '__main__':

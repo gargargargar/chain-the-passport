@@ -1,4 +1,4 @@
-from solcx import compile_source
+from solcx import compile_source, install_solc
 from web3 import Web3
 
 contract = None
@@ -13,7 +13,7 @@ class Address:
 
 class Contract:
     def __init__(self, address=None, abi=None):
-        url = "http://128.61.31.247:7545"
+        url = "HTTP://127.0.0.1:7545"
         global w3
         w3 = Web3(Web3.HTTPProvider(url))
         w3.eth.default_account = w3.eth.accounts[0]
@@ -27,13 +27,13 @@ class Contract:
     def newContract(self):
         compiled_sol = compile_source(
         '''
-        pragma solidity 0.4.25;
+        pragma solidity 0.6.0;
 
         contract Passport {
     
             mapping(address => string) public table;
     
-            constructor() {
+            constructor() public {
         
             }
     
@@ -77,5 +77,6 @@ if __name__ == '__main__':
     initializeBlockchain()
     
     addr = Address()
+    print(addr.address)
     setString(addr.address, "Hello")
     print(getString(addr.address))
