@@ -1,17 +1,23 @@
 import json
 from solcx import compile_source
 from web3 import Web3
-from eth_account import account
 
 contract = None
 w3 = None
 
-class Account:
+class User:
     def __init__(self):
         global w3
         self.address = w3.eth.account.create().address
-        
-        
+
+def getString(account):
+    return contract.functions.getString(account.address).call() 
+
+def setString(account, string):
+    tx_hash = contract.functions.updateString(account.address, string).transact()
+    tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+   
+    
 def initializeBlockchain():
     compiled_sol = compile_source(
     '''
@@ -49,17 +55,14 @@ def initializeBlockchain():
     global contract
     contract = w3.eth.contract(address = tx_receipt.contractAddress, abi=abi)
 
-def getString(account):
-    return contract.functions.getString(account.address).call()
-
-def setString(account, string):
-    tx_hash = contract.functions.updateString(account.address, string).transact()
-    tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
 
 
 if (__name__ == '__main__'): 
 
     initializeBlockchain()
-    account = Account()
-    setString(account, "Hello")
-    print(getString(account))
+    account1 = User()
+    account2 = User()
+    setString(account1, "String")
+    setString(account2, "String2")
+    print(getString(account2))
+    print(getString(account1))
