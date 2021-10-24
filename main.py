@@ -1,6 +1,7 @@
 from flask import Flask, request
 import user
 import json
+import firebase_admin
 
 app = Flask(__name__)
 
@@ -12,13 +13,14 @@ def hello_world():
 
 @app.route('/qr_metadata')
 def gen_qr_code_metadata():
-    session_id = request.args.get('session_id')
-    return user.gen_qr_code_metadata(session_id)
+    id_token = request.args.get('id_token')
+    return user.gen_qr_code_metadata(id_token)
 
 
 @app.route('/validate')
 def validate():
     metadata = request.args.get('metadata')
+    print(metadata)
     if metadata is None:
         metadata = json.dumps({})
     return user.validate_qr_code_metadata(metadata)
@@ -31,5 +33,8 @@ def view_or_add_vaccine_record():
     return 'Work in progress'
 
 
+default_app = firebase_admin.initialize_app()
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
+
